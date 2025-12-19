@@ -2,4 +2,6 @@
     <string name="app_name">per12</string>
     <string name="entry_siswa">Tambah Siswa</string>
     <string name="back">back</string>
+    <string name="nama">Nama Siswa*</string>
+    <string name="alamat">Alamat Siswa*</string>
 </resources>
