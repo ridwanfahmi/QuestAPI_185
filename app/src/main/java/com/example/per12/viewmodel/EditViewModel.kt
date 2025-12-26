@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
-
+import com.example.per12.modeldata.DetailSiswa
 import com.example.per12.modeldata.UIStateSiswa
 import com.example.per12.modeldata.toUiStateSiswa
 import com.example.per12.repositori.RepositoryDataSiswa
@@ -24,6 +24,16 @@ class EditViewModel(savedStateHandle: SavedStateHandle, private val repositoryDa
         viewModelScope.launch {
             uiStateSiswa = repositoryDataSiswa.getSatuSiswa(idSiswa)
                 .toUiStateSiswa(true)
+        }
+    }
+
+    fun updateUiState(detailSiswa: DetailSiswa){
+        uiStateSiswa = UIStateSiswa(detailSiswa = detailSiswa, isEntryValid = validasiInput(detailSiswa))
+    }
+
+    private fun validasiInput(uiState: DetailSiswa = uiStateSiswa.detailSiswa): Boolean {
+        return with(uiState){
+            nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
         }
     }
 
