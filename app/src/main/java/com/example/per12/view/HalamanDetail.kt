@@ -1,5 +1,8 @@
 package com.example.per12.view
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -9,14 +12,21 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.per12.R
+import com.example.per12.modeldata.DataSiswa
 import com.example.per12.uicontroller.route.DestinasiDetail
 import com.example.per12.viewmodel.DetailViewModel
 import com.example.per12.viewmodel.StatusUIDetail
@@ -83,4 +93,50 @@ private fun BodyDetailDataSiswa(
     statusUIDetail: StatusUIDetail,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
-){}
+){
+    Column(
+        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+    ){
+
+        var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+
+        when(statusUIDetail){
+            is StatusUIDetail.Success -> DetailDataSiswa(
+                siswa = statusUIDetail.satusiswa,
+                modifier = Modifier.fillMaxWidth())
+            else -> {}
+        }
+        OutlinedButton(
+            onClick = { deleteConfirmationRequired = true },
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(stringResource(R.string.delete))
+        }
+
+        if (deleteConfirmationRequired) {
+            DeleteConfirmationDialog(
+                onDeleteConfirm = {
+                    deleteConfirmationRequired = false
+                    onDelete()
+                },
+                onDeleteCancel = { deleteConfirmationRequired = false },
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+    }
+}
+@Composable
+fun DetailDataSiswa(
+    siswa: DataSiswa, modifier: Modifier = Modifier
+) {}
+
+
+
+@Composable
+private fun DeleteConfirmationDialog(
+    onDeleteConfirm: () -> Unit,
+    onDeleteCancel: () -> Unit,
+    modifier: Modifier = Modifier
+) {}
