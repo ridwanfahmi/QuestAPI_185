@@ -2,7 +2,7 @@
 package com.example.per12.viewmodel
 
 
-
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.InternalSerializationApi
 import java.io.IOException
 import retrofit2.HttpException
-
+import retrofit2.Response
 
 sealed interface StatusUIDetail {
     data class Success(val satusiswa: DataSiswa) : StatusUIDetail
@@ -47,5 +47,14 @@ class DetailViewModel (savedStateHandle: SavedStateHandle, private val repositor
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
+    suspend fun hapusSatuSiswa(){
+        val resp: Response<Void> = repositoryDataSiswa.hapusSatuSiswa(idSiswa)
 
+        if(resp.isSuccessful){
+            println("Sukses Hapus Data : ${resp.message()}")
+        }else{
+            println("Gagal Hapus Data : ${resp.errorBody()}")
+        }
+    }
 }
