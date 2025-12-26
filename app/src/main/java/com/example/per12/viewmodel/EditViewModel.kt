@@ -8,10 +8,10 @@ import com.example.per12.modeldata.DetailSiswa
 import com.example.per12.modeldata.UIStateSiswa
 import com.example.per12.modeldata.toUiStateSiswa
 import com.example.per12.repositori.RepositoryDataSiswa
-
+import retrofit2.Response
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
+import com.example.per12.modeldata.toDataSiswa
 import com.example.per12.uicontroller.route.DestinasiDetail
 import kotlinx.coroutines.launch
 
@@ -37,5 +37,15 @@ class EditViewModel(savedStateHandle: SavedStateHandle, private val repositoryDa
         }
     }
 
+    suspend fun editSatuSiswa(){
+        if (validasiInput(uiStateSiswa.detailSiswa)){
+            val call: Response<Void> = repositoryDataSiswa.editSatuSiswa(idSiswa,uiStateSiswa.detailSiswa.toDataSiswa())
 
+            if (call.isSuccessful){
+                println("Update Sukses : ${call.message()}")
+            }else{
+                println("Update Error : ${call.errorBody()}")
+            }
+        }
+    }
 }
